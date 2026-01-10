@@ -193,51 +193,51 @@ export default function ServicesSection() {
 
                             const viewportWidth = window.innerWidth;
                             const viewportCenter = viewportWidth / 2;
-                            
+
                             // Get card dimensions - measure actual rendered size after layout
                             const cardWidth = cards[0].getBoundingClientRect().width;
                             const gap = viewportWidth >= 768 ? 32 : 24;
-                            
+
                             // Calculate positions: cards are positioned with paddingLeft = 8vw initially
                             const paddingLeft = viewportWidth * 0.08;
-                            
+
                             // First card's center position when at initial position (paddingLeft)
                             const firstCardCenterInitial = paddingLeft + (cardWidth / 2);
-                            
+
                             // Calculate offset needed to center first card initially
                             // We need to shift container left so first card's center aligns with viewport center
                             const initialOffset = firstCardCenterInitial - viewportCenter;
-                            
+
                             // Last card's left edge position
                             const lastCardLeftEdge = paddingLeft + (numCards - 1) * (cardWidth + gap);
                             // Last card's center position when at initial position
                             const lastCardCenterInitial = lastCardLeftEdge + (cardWidth / 2);
-                            
+
                             // Calculate how much we need to scroll to center the last card
                             // Scroll amount = difference between last card center and first card center positions
                             const scrollAmount = lastCardCenterInitial - firstCardCenterInitial;
-                            
+
                             // Each card gets equal time in the scroll sequence
-                            const scrollDistancePerCard = Math.max(1200, viewportWidth * 1.0);
+                            const scrollDistancePerCard = Math.max(400, viewportWidth * 0.4);
                             const totalScrollDistance = scrollDistancePerCard * numCards;
 
                             // Setup initial card states with optimized rendering
                             cards.forEach((card, index) => {
                                 // Enable hardware acceleration
-                                gsap.set(card, { 
-                                    willChange: "transform, opacity, filter",
+                                gsap.set(card, {
+                                    willChange: "transform, opacity",
                                     force3D: true,
                                 });
-                                
+
                                 if (index === 0) {
-                                    gsap.set(card, { scale: 1, opacity: 1, filter: "blur(0px)" });
+                                    gsap.set(card, { scale: 1, opacity: 1 });
                                 } else {
-                                    gsap.set(card, { scale: 0.88, opacity: 0.5, filter: "blur(3px)" });
+                                    gsap.set(card, { scale: 0.94, opacity: 0.6 });
                                 }
                             });
 
                             // Set initial position to center first card
-                            gsap.set(scrollContainer, { 
+                            gsap.set(scrollContainer, {
                                 x: -initialOffset,
                                 willChange: "transform",
                                 force3D: true,
@@ -265,86 +265,68 @@ export default function ServicesSection() {
                                         fastScrollEnd: true,
                                         onUpdate: (self) => {
                                             const progress = Math.min(1, Math.max(0, self.progress));
-                                            
+
                                             // Update horizontal scroll position (centered)
                                             const currentX = -initialOffset - (progress * scrollAmount);
                                             gsap.set(scrollContainer, { x: currentX });
-                                            
+
                                             // Update card states based on progress
                                             // Each card gets 1/numCards of the scroll progress
                                             const cardProgress = progress * numCards;
                                             const activeCardIndex = Math.min(Math.floor(cardProgress), numCards - 1);
                                             const cardLocalProgress = Math.max(0, Math.min(1, cardProgress - activeCardIndex));
-                                            
-                                            // Batch DOM updates for better performance
+
+                                            // Batch DOM updates for better performance - NO BLUR for performance
                                             cards.forEach((card, index) => {
                                                 const distance = Math.abs(index - activeCardIndex);
-                                                
                                                 let scale: number;
                                                 let opacity: number;
-                                                let blur: number;
-                                                
+
                                                 if (distance === 0 && index === activeCardIndex) {
-                                                    // Active card - transitioning into focus
                                                     const focusProgress = Math.min(1, cardLocalProgress * 2);
-                                                    scale = 0.88 + (0.12 * focusProgress);
-                                                    opacity = 0.5 + (0.5 * focusProgress);
-                                                    blur = 3 - (3 * focusProgress);
+                                                    scale = 0.94 + (0.06 * focusProgress);
+                                                    opacity = 0.7 + (0.3 * focusProgress);
                                                 } else if (distance === 1 && index === activeCardIndex + 1) {
-                                                    // Next card - coming into view
                                                     const nextProgress = Math.max(0, Math.min(1, (cardLocalProgress - 1) * 2));
-                                                    scale = 0.88 + (0.12 * nextProgress);
-                                                    opacity = 0.5 + (0.5 * nextProgress);
-                                                    blur = 3 - (3 * nextProgress);
+                                                    scale = 0.94 + (0.06 * nextProgress);
+                                                    opacity = 0.7 + (0.3 * nextProgress);
                                                 } else if (distance === 1 && index === activeCardIndex - 1) {
-                                                    // Previous card - fading out
                                                     const fadeProgress = 1 - Math.max(0, Math.min(1, (cardLocalProgress + 1) * 2));
-                                                    scale = 1 - (0.12 * fadeProgress);
-                                                    opacity = 1 - (0.6 * fadeProgress);
-                                                    blur = 0 + (3 * fadeProgress);
+                                                    scale = 1 - (0.06 * fadeProgress);
+                                                    opacity = 1 - (0.3 * fadeProgress);
                                                 } else {
-                                                    // Cards further away - keep dimmed
-                                                    scale = 0.88;
-                                                    opacity = index < activeCardIndex ? 0.3 : 0.4;
-                                                    blur = 3;
+                                                    scale = 0.94;
+                                                    opacity = index < activeCardIndex ? 0.5 : 0.6;
                                                 }
-                                                
-                                                // Ensure last card is fully visible at end
+
                                                 if (progress >= 0.99 && index === numCards - 1) {
                                                     scale = 1;
                                                     opacity = 1;
-                                                    blur = 0;
                                                 }
-                                                
-                                                // Update card with batched properties
-                                                gsap.set(card, { 
-                                                    scale, 
-                                                    opacity, 
-                                                    filter: `blur(${blur}px)`,
-                                                });
+
+                                                gsap.set(card, { scale, opacity });
                                             });
                                         },
                                         onLeave: () => {
-                                            // Ensure last card is fully visible and centered when leaving section
-                                            gsap.set(cards[numCards - 1], { scale: 1, opacity: 1, filter: "blur(0px)" });
+                                            gsap.set(cards[numCards - 1], { scale: 1, opacity: 1 });
                                             gsap.set(scrollContainer, { x: -initialOffset - scrollAmount });
                                         },
                                         onEnterBack: () => {
                                             // Reset to first card centered when scrolling back up
-                                            gsap.set(cards[0], { scale: 1, opacity: 1, filter: "blur(0px)" });
+                                            gsap.set(cards[0], { scale: 1, opacity: 1 });
                                             for (let i = 1; i < numCards; i++) {
-                                                gsap.set(cards[i], { scale: 0.88, opacity: 0.5, filter: "blur(3px)" });
+                                                gsap.set(cards[i], { scale: 0.94, opacity: 0.6 });
                                             }
                                             gsap.set(scrollContainer, { x: -initialOffset });
                                         },
-                                        onRefresh: function(this: ScrollTrigger) {
+                                        onRefresh: (self) => {
                                             // Ensure proper state after refresh
-                                            const progress = this.progress || 0;
+                                            const progress = self.progress || 0;
                                             if (progress === 0) {
-                                                gsap.set(cards[0], { scale: 1, opacity: 1, filter: "blur(0px)" });
+                                                gsap.set(cards[0], { scale: 1, opacity: 1 });
                                                 gsap.set(scrollContainer, { x: -initialOffset });
                                             } else if (progress >= 0.99) {
-                                                gsap.set(cards[numCards - 1], { scale: 1, opacity: 1, filter: "blur(0px)" });
+                                                gsap.set(cards[numCards - 1], { scale: 1, opacity: 1 });
                                                 gsap.set(scrollContainer, { x: -initialOffset - scrollAmount });
                                             }
                                         },
@@ -360,9 +342,9 @@ export default function ServicesSection() {
                                     ScrollTrigger.refresh();
                                 }, 300);
                             };
-                            
+
                             window.addEventListener("resize", handleResize);
-                            
+
                             // Store cleanup function
                             (sectionRef.current as any)._scrollCleanup = () => {
                                 window.removeEventListener("resize", handleResize);
@@ -398,7 +380,7 @@ export default function ServicesSection() {
         <section
             id="services"
             ref={sectionRef}
-            className="relative bg-[#050505] overflow-hidden"
+            className="relative bg-[#050505] overflow-visible"
             style={{ perspective: "1000px", minHeight: "100vh" }}
         >
             {/* Full-screen dark overlay to hide other sections */}
@@ -409,15 +391,15 @@ export default function ServicesSection() {
                 <div className="absolute inset-0 bg-gradient-radial from-blue-500/8 via-purple-500/5 to-transparent blur-3xl animate-pulse" />
             </div>
 
-            {/* Main content - flexbox centered vertically */}
-            <div className="relative z-10 min-h-screen flex flex-col justify-center py-20 md:py-24">
+            {/* Main content - flexbox with top alignment for proper pinning */}
+            <div className="relative z-10 h-screen flex flex-col pt-12 md:pt-16">
                 {/* Header */}
-                <div ref={headerRef} className="text-center mb-6 md:mb-10 px-4">
-                    <p className="services-label text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-3 md:mb-4">
+                <div ref={headerRef} className="text-center mb-4 md:mb-6 px-4 flex-shrink-0">
+                    <p className="services-label text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-2 md:mb-3">
                         Services
                     </p>
-                    <div className="services-line h-px w-16 md:w-24 bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto mb-4 md:mb-6" />
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white/90 tracking-tight leading-tight" style={{ perspective: "1000px" }}>
+                    <div className="services-line h-px w-16 md:w-24 bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto mb-3 md:mb-4" />
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-light text-white/90 tracking-tight leading-tight" style={{ perspective: "1000px" }}>
                         {headingText.split(" ").map((word, i) => (
                             <span key={i} className="word inline-block mr-[0.25em]" style={{ transformStyle: "preserve-3d" }}>
                                 {word}
@@ -436,11 +418,10 @@ export default function ServicesSection() {
                 {/* Services Horizontal Scroll Container */}
                 <div
                     ref={cardsRef}
-                    className="flex gap-6 md:gap-8 items-center py-12 md:py-16"
-                    style={{ 
-                        paddingLeft: "8vw", 
+                    className="flex gap-6 md:gap-8 items-start py-6 md:py-8 flex-1"
+                    style={{
+                        paddingLeft: "8vw",
                         paddingRight: "8vw",
-                        minHeight: "auto",
                         overflow: "visible",
                         willChange: "transform",
                     }}
@@ -451,7 +432,7 @@ export default function ServicesSection() {
                             <motion.div
                                 key={service.title}
                                 ref={(el) => { cardRefs.current[index] = el; }}
-                                className="service-card group relative p-6 md:p-8 bg-white/[0.02] backdrop-blur-sm border border-white/5 rounded-2xl md:rounded-3xl overflow-hidden cursor-none flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[350px] lg:w-[380px] max-h-none"
+                                className="service-card group relative p-5 md:p-6 bg-white/[0.02] backdrop-blur-sm border border-white/5 rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[320px] lg:w-[350px] h-auto"
                                 onMouseMove={(e) => handleMouseMove(e, index)}
                                 onMouseEnter={() => handleMouseEnter(index)}
                                 onMouseLeave={() => handleMouseLeave(index)}
@@ -465,104 +446,37 @@ export default function ServicesSection() {
                                         : "transform 0.5s ease-out",
                                 }}
                             >
-                                {/* Custom cursor follower */}
-                                {mouseState.isHovering && (
-                                    <motion.div
-                                        className="absolute w-40 h-40 rounded-full pointer-events-none z-0"
-                                        style={{
-                                            background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)",
-                                            left: `${(mouseState.x + 1) * 50}%`,
-                                            top: `${(mouseState.y + 1) * 50}%`,
-                                            transform: "translate(-50%, -50%)",
-                                        }}
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.8 }}
-                                        transition={{ duration: 0.2 }}
-                                    />
-                                )}
-
-                                {/* Animated gradient border */}
-                                <div
-                                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                                    style={{
-                                        background: "linear-gradient(135deg, rgba(139,92,246,0.3) 0%, rgba(59,130,246,0.2) 50%, rgba(236,72,153,0.3) 100%)",
-                                        padding: "1px",
-                                        mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                                        maskComposite: "exclude",
-                                        WebkitMaskComposite: "xor",
-                                    }}
-                                />
-
-                                {/* Glow effect on hover */}
-                                <motion.div
-                                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                                    style={{
-                                        background: `radial-gradient(800px circle at ${(mouseState.x + 1) * 50}% ${(mouseState.y + 1) * 50}%, rgba(139,92,246,0.06), transparent 50%)`,
-                                    }}
-                                />
-
                                 <div className="card-content relative z-10">
-                                    {/* Icon with enhanced glow */}
-                                    <div className="relative w-16 h-16 md:w-20 md:h-20 mb-6 md:mb-8">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl" />
-                                        <motion.div
-                                            className="absolute inset-0 flex items-center justify-center text-white/70 group-hover:text-white transition-colors duration-300"
-                                            animate={mouseState.isHovering ? { scale: 1.1 } : { scale: 1 }}
-                                            transition={{ duration: 0.3 }}
-                                        >
+                                    {/* Icon */}
+                                    <div className="relative w-12 h-12 md:w-14 md:h-14 mb-4 md:mb-5">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 rounded-xl" />
+                                        <div className="absolute inset-0 flex items-center justify-center text-white/70 group-hover:text-white transition-colors duration-300">
                                             {service.icon}
-                                        </motion.div>
-                                        {/* Animated glow ring */}
-                                        <motion.div
-                                            className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100"
-                                            style={{
-                                                background: "conic-gradient(from 0deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4), rgba(236,72,153,0.4), rgba(139,92,246,0.4))",
-                                                filter: "blur(8px)",
-                                            }}
-                                            animate={{
-                                                rotate: [0, 360],
-                                            }}
-                                            transition={{
-                                                duration: 4,
-                                                repeat: Infinity,
-                                                ease: "linear",
-                                            }}
-                                        />
+                                        </div>
                                     </div>
 
                                     {/* Title */}
-                                    <h3 className="text-2xl md:text-3xl font-medium text-white/90 mb-4 md:mb-5 group-hover:text-white transition-colors duration-300">
+                                    <h3 className="text-xl md:text-2xl font-medium text-white/90 mb-2 md:mb-3 group-hover:text-white transition-colors duration-300">
                                         {service.title}
                                     </h3>
 
                                     {/* Description */}
-                                    <p className="text-base md:text-lg text-white/50 leading-relaxed mb-6 md:mb-8 group-hover:text-white/70 transition-colors duration-300">
+                                    <p className="text-sm md:text-base text-white/50 leading-relaxed mb-4 md:mb-5 group-hover:text-white/70 transition-colors duration-300">
                                         {service.description}
                                     </p>
 
                                     {/* Features */}
-                                    <div className="flex flex-wrap gap-2 md:gap-3">
-                                        {service.features.map((feature, featureIndex) => (
-                                            <motion.span
+                                    <div className="flex flex-wrap gap-2">
+                                        {service.features.map((feature) => (
+                                            <span
                                                 key={feature}
-                                                className="px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm bg-white/5 text-white/50 rounded-full border border-white/10 group-hover:bg-white/10 group-hover:text-white/80 group-hover:border-white/20 transition-all duration-300"
-                                                whileHover={{ scale: 1.05, y: -2 }}
+                                                className="px-3 py-1.5 text-xs bg-white/5 text-white/50 rounded-full border border-white/10 group-hover:bg-white/10 group-hover:text-white/80 group-hover:border-white/20 transition-all duration-300"
                                             >
                                                 {feature}
-                                            </motion.span>
+                                            </span>
                                         ))}
                                     </div>
 
-                                    {/* Arrow indicator */}
-                                    <motion.div
-                                        className="absolute top-8 md:top-10 right-8 md:right-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                        whileHover={{ scale: 1.2, rotate: 45 }}
-                                    >
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white/60">
-                                            <path d="M7 17L17 7M17 7H7M17 7V17" />
-                                        </svg>
-                                    </motion.div>
                                 </div>
                             </motion.div>
                         );
@@ -580,7 +494,6 @@ export default function ServicesSection() {
                                 <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                         </motion.div>
-                        <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
                     </div>
                 </div>
             </div>
