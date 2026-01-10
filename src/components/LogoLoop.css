@@ -1,0 +1,81 @@
+.logo-loop-container {
+    --logo-height: 36px;
+    --logo-gap: 56px;
+    --animation-duration: 20s;
+    --fade-color: #050505;
+
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Fade edges */
+.logo-loop-container.with-fade::before,
+.logo-loop-container.with-fade::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+
+    .logo-loop-container.with-fade::before,
+    .logo-loop-container.with-fade::after {
+        width: 100px;
+    }
+}
+
+.logo-loop-container.with-fade::before {
+    left: 0;
+    background: linear-gradient(to right, var(--fade-color) 0%, transparent 100%);
+}
+
+.logo-loop-container.with-fade::after {
+    right: 0;
+    background: linear-gradient(to left, var(--fade-color) 0%, transparent 100%);
+}
+
+/* The scrolling track */
+.logo-track {
+    display: flex;
+    align-items: center;
+    gap: var(--logo-gap);
+    width: max-content;
+    animation: scrollLogos var(--animation-duration) linear infinite;
+}
+
+/* Pause on hover */
+.logo-loop-container.pause-on-hover:hover .logo-track {
+    animation-play-state: paused;
+}
+
+/* Individual logo items */
+.logo-item {
+    flex-shrink: 0;
+    font-size: var(--logo-height);
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-item:hover {
+    color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.15);
+}
+
+/* Infinite scroll animation */
+@keyframes scrollLogos {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
