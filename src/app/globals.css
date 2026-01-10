@@ -25,7 +25,9 @@
    ============================================ */
 
 html {
-  scroll-behavior: auto; /* Framer Motion handles scroll */
+  scroll-behavior: auto;
+  /* Framer Motion handles scroll */
+  overflow-x: clip;
 }
 
 body {

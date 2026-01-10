@@ -380,7 +380,7 @@ export default function ServicesSection() {
         <section
             id="services"
             ref={sectionRef}
-            className="relative bg-[#050505] overflow-visible"
+            className="relative bg-[#050505] overflow-x-clip"
             style={{ perspective: "1000px", minHeight: "100vh" }}
         >
             {/* Full-screen dark overlay to hide other sections */}
