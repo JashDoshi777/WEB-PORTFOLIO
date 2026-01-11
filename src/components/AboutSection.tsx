@@ -18,6 +18,9 @@ export default function AboutSection() {
     const textLine4Ref = useRef<HTMLDivElement>(null);
     const statsRef = useRef<HTMLDivElement>(null);
     const stripsWrapperRef = useRef<HTMLDivElement>(null);
+    const stat1Ref = useRef<HTMLDivElement>(null);
+    const stat2Ref = useRef<HTMLDivElement>(null);
+    const stat3Ref = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -52,86 +55,124 @@ export default function AboutSection() {
                 ease: "linear",
             });
 
-            // Set initial states - all hidden
-            gsap.set(cardRef.current, { opacity: 0, y: 60, scale: 0.95 });
-            gsap.set(textLine1Ref.current, { opacity: 0, x: 150 });
-            gsap.set(textLine2Ref.current, { opacity: 0, x: -150 });
-            gsap.set(textLine3Ref.current, { opacity: 0, x: 150 });
-            gsap.set(textLine4Ref.current, { opacity: 0, x: -150 });
-            gsap.set(statsRef.current, { opacity: 0, y: 40 });
-            gsap.set(stripsWrapperRef.current, { opacity: 0, y: 60 });
+            // Set initial states - all hidden with enhanced effects
+            gsap.set(cardRef.current, { opacity: 0, y: 80, scale: 0.9, rotateY: -15, filter: "blur(10px)" });
+            gsap.set(textLine1Ref.current, { opacity: 0, x: 200, filter: "blur(8px)" });
+            gsap.set(textLine2Ref.current, { opacity: 0, x: -200, filter: "blur(8px)" });
+            gsap.set(textLine3Ref.current, { opacity: 0, y: 60, filter: "blur(6px)" });
+            gsap.set(textLine4Ref.current, { opacity: 0, y: 60, filter: "blur(6px)" });
+            gsap.set(statsRef.current, { opacity: 0 });
+            gsap.set(stat1Ref.current, { opacity: 0, y: 50, scale: 0.8 });
+            gsap.set(stat2Ref.current, { opacity: 0, y: 50, scale: 0.8 });
+            gsap.set(stat3Ref.current, { opacity: 0, y: 50, scale: 0.8 });
+            gsap.set(stripsWrapperRef.current, { opacity: 0, y: 80, scale: 0.95 });
 
             // Main pinned scroll timeline
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top 10%",
+                    start: "top top",
                     end: "+=2000",
-                    scrub: 1.5,
+                    scrub: 1,
                     pin: true,
                     anticipatePin: 1,
+                    pinSpacing: true,
                 },
             });
 
-            // Fade marquee header
+            // Fade marquee header with blur
             tl.to(marqueeRef.current, {
-                opacity: 0.2,
-                duration: 0.15,
+                opacity: 0.15,
+                filter: "blur(2px)",
+                duration: 0.12,
             }, 0);
 
-            // Reveal card
+            // Reveal card with 3D effect
             tl.to(cardRef.current, {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 0.2,
-                ease: "power2.out",
+                rotateY: 0,
+                filter: "blur(0px)",
+                duration: 0.25,
+                ease: "power3.out",
             }, 0);
 
-            // Text lines staggered reveal
+            // Text line 1 - dramatic slide in
             tl.to(textLine1Ref.current, {
                 opacity: 1,
                 x: 0,
+                filter: "blur(0px)",
                 duration: 0.2,
-                ease: "power2.out",
-            }, 0.15);
+                ease: "power3.out",
+            }, 0.12);
 
+            // Text line 2 - slide from opposite direction
             tl.to(textLine2Ref.current, {
                 opacity: 1,
                 x: 0,
+                filter: "blur(0px)",
                 duration: 0.2,
-                ease: "power2.out",
-            }, 0.28);
+                ease: "power3.out",
+            }, 0.22);
 
+            // Text line 3 - fade up
             tl.to(textLine3Ref.current, {
                 opacity: 1,
-                x: 0,
-                duration: 0.2,
+                y: 0,
+                filter: "blur(0px)",
+                duration: 0.18,
                 ease: "power2.out",
-            }, 0.41);
+            }, 0.35);
 
+            // Text line 4 - fade up
             tl.to(textLine4Ref.current, {
                 opacity: 1,
-                x: 0,
-                duration: 0.2,
+                y: 0,
+                filter: "blur(0px)",
+                duration: 0.18,
                 ease: "power2.out",
-            }, 0.54);
+            }, 0.45);
 
-            // Stats reveal
+            // Stats container fade in
             tl.to(statsRef.current, {
                 opacity: 1,
-                y: 0,
-                duration: 0.15,
-                ease: "power2.out",
-            }, 0.67);
+                duration: 0.1,
+            }, 0.55);
 
-            // Strips reveal at the end
+            // Stats staggered reveal with scale
+            tl.to(stat1Ref.current, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.12,
+                ease: "back.out(1.7)",
+            }, 0.58);
+
+            tl.to(stat2Ref.current, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.12,
+                ease: "back.out(1.7)",
+            }, 0.65);
+
+            tl.to(stat3Ref.current, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.12,
+                ease: "back.out(1.7)",
+            }, 0.72);
+
+            // Strips reveal at the end with scale
             tl.to(stripsWrapperRef.current, {
                 opacity: 1,
                 y: 0,
-                duration: 0.18,
-                ease: "power2.out",
-            }, 0.8);
+                scale: 1,
+                duration: 0.2,
+                ease: "power3.out",
+            }, 0.82);
 
         }, sectionRef);
 
@@ -142,36 +183,43 @@ export default function AboutSection() {
     const strip1Text = "★ Driven by Passion, Built with Code ★ Custom Web Experiences ★ Innovative Self-Made Creations ★ Tailored Web Solutions ★ ";
     const strip2Text = "★ Premium Quality ★ Performance First ★ Pixel Perfect ★ Digital Craft ★ Modern Development ★ Creative Coding ★ ";
 
+    const stats = [
+        { number: "3+", label: "YEARS", ref: stat1Ref },
+        { number: "50+", label: "PROJECTS", ref: stat2Ref },
+        { number: "30+", label: "CLIENTS", ref: stat3Ref },
+    ];
+
     return (
         <section
             id="about"
             ref={sectionRef}
-            className="relative bg-[#050505]"
+            className="relative bg-[#050505] overflow-visible"
         >
             {/* Pinned wrapper that includes header and content */}
-            <div className="min-h-screen">
+            <div className="min-h-screen pt-20">
                 {/* Large Header Marquee Banner */}
-                <div ref={marqueeRef} className="py-2 md:py-3 overflow-hidden border-b border-white/5">
+                <div ref={marqueeRef} className="py-3 md:py-4 overflow-hidden border-b border-white/5">
                     <div className="about-header-marquee flex whitespace-nowrap" style={{ width: "200%" }}>
-                        <span className="text-3xl md:text-5xl lg:text-7xl font-black tracking-tight text-white/90 uppercase">
+                        <span className="text-2xl md:text-4xl lg:text-6xl font-black tracking-tight text-white/90 uppercase">
                             {marqueeText.repeat(6)}
                         </span>
                     </div>
                 </div>
 
                 {/* Main Content Area */}
-                <div className="px-6 md:px-12 lg:px-20 py-6 md:py-8">
-                    <div className="flex items-start gap-10 md:gap-16 lg:gap-20">
+                <div className="px-6 md:px-12 lg:px-20 py-3 md:py-4">
+                    <div className="flex items-start gap-8 md:gap-12 lg:gap-16">
                         {/* Left Side - Card */}
                         <div
                             ref={cardRef}
-                            className="flex-shrink-0 w-56 md:w-72 lg:w-80"
+                            className="flex-shrink-0 w-48 md:w-56 lg:w-64"
+                            style={{ perspective: "1000px" }}
                         >
                             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-white/10">
-                                {/* Background effects */}
+                                {/* Background effects - neutral grey color scheme */}
                                 <div className="absolute inset-0 opacity-60">
-                                    <div className="absolute top-0 left-1/4 w-40 h-40 bg-purple-600/30 rounded-full blur-[70px]" />
-                                    <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-blue-600/30 rounded-full blur-[70px]" />
+                                    <div className="absolute top-0 left-1/4 w-40 h-40 bg-neutral-400/20 rounded-full blur-[70px]" />
+                                    <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-zinc-400/25 rounded-full blur-[70px]" />
                                 </div>
 
                                 {/* Grid pattern */}
@@ -187,7 +235,7 @@ export default function AboutSection() {
                                 <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
                                     {/* Avatar */}
                                     <div className="relative mb-4">
-                                        <div className="absolute inset-0 w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 blur-xl opacity-40 animate-pulse" />
+                                        <div className="absolute inset-0 w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-neutral-300 to-zinc-400 blur-xl opacity-30 animate-pulse" />
                                         <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center backdrop-blur-sm">
                                             <span className="text-3xl md:text-5xl font-thin text-white/70">JD</span>
                                         </div>
@@ -209,8 +257,8 @@ export default function AboutSection() {
                                 <div className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2 border-white/10 rounded-bl" />
                                 <div className="absolute bottom-3 right-3 w-6 h-6 border-r-2 border-b-2 border-white/10 rounded-br" />
 
-                                {/* Side accent */}
-                                <div className="absolute -right-0.5 top-1/3 w-1 h-24 bg-gradient-to-b from-purple-500 via-blue-500 to-cyan-400 rounded-full" />
+                                {/* Side accent - neutral grey gradient */}
+                                <div className="absolute -right-0.5 top-1/3 w-1 h-24 bg-gradient-to-b from-neutral-300 via-zinc-400 to-neutral-500 rounded-full" />
 
                                 {/* Location tag */}
                                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
@@ -221,33 +269,35 @@ export default function AboutSection() {
 
                         {/* Right Side - Text Content */}
                         <div className="flex-1 pt-4">
-                            {/* Animated text lines - reduced spacing */}
-                            <div className="space-y-3 md:space-y-4 mb-10 md:mb-12">
+                            {/* Animated text lines - enhanced typography */}
+                            <div className="space-y-2 md:space-y-3 mb-6 md:mb-8">
                                 <div ref={textLine1Ref}>
-                                    <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-white/90 leading-tight">
-                                        Crafting digital experiences
+                                    <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-[1.1]">
+                                        <span className="font-extralight">Crafting</span>{" "}
+                                        <span className="font-bold italic">digital</span>{" "}
+                                        <span className="font-light">experiences</span>
                                     </h2>
                                 </div>
 
                                 <div ref={textLine2Ref}>
-                                    <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light leading-tight">
-                                        <span className="text-white/50">that </span>
-                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">inspire</span>
-                                        <span className="text-white/50"> and </span>
-                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">engage</span>
+                                    <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-[1.1]">
+                                        <span className="text-white/40 font-light">that </span>
+                                        <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-zinc-300">inspire</span>
+                                        <span className="text-white/40 font-light"> and </span>
+                                        <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 via-neutral-100 to-white">engage</span>
                                     </h2>
                                 </div>
 
-                                <div ref={textLine3Ref} className="max-w-2xl">
-                                    <p className="text-base md:text-lg lg:text-xl text-white/50 leading-relaxed">
-                                        I'm a creative developer passionate about building
-                                        intuitive, high-performance web applications that
+                                <div ref={textLine3Ref} className="max-w-2xl pt-1">
+                                    <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed font-light">
+                                        I&apos;m a <span className="text-white font-semibold">creative developer</span> passionate about building
+                                        intuitive, <span className="text-white/90 font-medium">high-performance</span> web applications that
                                         deliver meaningful results.
                                     </p>
                                 </div>
 
                                 <div ref={textLine4Ref} className="max-w-2xl">
-                                    <p className="text-base md:text-lg lg:text-xl text-white/40 leading-relaxed">
+                                    <p className="text-base md:text-lg lg:text-xl text-white/40 leading-relaxed font-light italic">
                                         From concept to launch, I focus on user-centered design
                                         and clean, maintainable code.
                                     </p>
@@ -256,18 +306,14 @@ export default function AboutSection() {
 
                             {/* Stats */}
                             <div ref={statsRef}>
-                                <div className="h-px bg-gradient-to-r from-white/20 via-white/10 to-transparent mb-8 max-w-xl" />
-                                <div className="flex gap-10 md:gap-14 lg:gap-20">
-                                    {[
-                                        { number: "3+", label: "YEARS" },
-                                        { number: "50+", label: "PROJECTS" },
-                                        { number: "30+", label: "CLIENTS" },
-                                    ].map((stat) => (
-                                        <div key={stat.label}>
-                                            <p className="text-3xl md:text-4xl lg:text-5xl font-light text-white/90 mb-1">
+                                <div className="h-px bg-gradient-to-r from-white/30 via-white/15 to-transparent mb-4 max-w-xl" />
+                                <div className="flex gap-8 md:gap-12 lg:gap-16">
+                                    {stats.map((stat) => (
+                                        <div key={stat.label} ref={stat.ref}>
+                                            <p className="text-3xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 mb-0.5">
                                                 {stat.number}
                                             </p>
-                                            <p className="text-xs md:text-sm text-white/40 uppercase tracking-widest">
+                                            <p className="text-xs md:text-sm text-white/50 uppercase tracking-[0.25em] font-medium">
                                                 {stat.label}
                                             </p>
                                         </div>
@@ -279,14 +325,14 @@ export default function AboutSection() {
                 </div>
 
                 {/* Diagonal Crossing Strips */}
-                <div ref={stripsWrapperRef} className="relative h-48 md:h-56 mt-4">
+                <div ref={stripsWrapperRef} className="relative h-28 md:h-32">
                     {/* Strip 1 - White/Light - Tilted Down-Right */}
                     <div
                         className="absolute w-[300vw] left-[-100vw] bg-white py-5 md:py-6 shadow-2xl z-10"
                         style={{ transform: "rotate(-4deg)", top: "5%" }}
                     >
                         <div className="about-strip-1-marquee whitespace-nowrap" style={{ display: "inline-block", width: "200%" }}>
-                            <span className="text-xl md:text-2xl lg:text-3xl font-bold text-[#050505] tracking-wide inline-block">
+                            <span className="text-xl md:text-2xl lg:text-3xl font-black text-[#050505] tracking-wide inline-block uppercase">
                                 {strip1Text.repeat(15)}
                             </span>
                         </div>
@@ -298,7 +344,7 @@ export default function AboutSection() {
                         style={{ transform: "rotate(4deg)", top: "50%" }}
                     >
                         <div className="about-strip-2-marquee whitespace-nowrap" style={{ display: "inline-block", width: "200%", transform: "translateX(-50%)" }}>
-                            <span className="text-xl md:text-2xl lg:text-3xl font-bold text-white/90 tracking-wide inline-block">
+                            <span className="text-xl md:text-2xl lg:text-3xl font-black text-white/90 tracking-wide inline-block uppercase">
                                 {strip2Text.repeat(15)}
                             </span>
                         </div>
