@@ -230,9 +230,9 @@ export default function ServicesSection() {
                                 });
 
                                 if (index === 0) {
-                                    gsap.set(card, { scale: 1, opacity: 1 });
+                                    gsap.set(card, { scale: 1.2, opacity: 1 });
                                 } else {
-                                    gsap.set(card, { scale: 0.94, opacity: 0.6 });
+                                    gsap.set(card, { scale: 0.7, opacity: 0.4 });
                                 }
                             });
 
@@ -270,52 +270,48 @@ export default function ServicesSection() {
                                             const currentX = -initialOffset - (progress * scrollAmount);
                                             gsap.set(scrollContainer, { x: currentX });
 
-                                            // Update card states based on progress
-                                            // Each card gets 1/numCards of the scroll progress
-                                            const cardProgress = progress * numCards;
-                                            const activeCardIndex = Math.min(Math.floor(cardProgress), numCards - 1);
-                                            const cardLocalProgress = Math.max(0, Math.min(1, cardProgress - activeCardIndex));
+                                            // Calculate which card is centered based on scroll progress
+                                            // Each card gets an equal portion of the scroll
+                                            const totalCards = numCards;
+                                            const progressPerCard = 1 / (totalCards - 1 || 1);
 
-                                            // Batch DOM updates for better performance - NO BLUR for performance
                                             cards.forEach((card, index) => {
-                                                const distance = Math.abs(index - activeCardIndex);
-                                                let scale: number;
-                                                let opacity: number;
+                                                // Calculate how "centered" this card is (0 = perfectly centered, 1+ = far from center)
+                                                const cardCenterProgress = index * progressPerCard;
+                                                const distanceFromCenter = Math.abs(progress - cardCenterProgress);
 
-                                                if (distance === 0 && index === activeCardIndex) {
-                                                    const focusProgress = Math.min(1, cardLocalProgress * 2);
-                                                    scale = 0.94 + (0.06 * focusProgress);
-                                                    opacity = 0.7 + (0.3 * focusProgress);
-                                                } else if (distance === 1 && index === activeCardIndex + 1) {
-                                                    const nextProgress = Math.max(0, Math.min(1, (cardLocalProgress - 1) * 2));
-                                                    scale = 0.94 + (0.06 * nextProgress);
-                                                    opacity = 0.7 + (0.3 * nextProgress);
-                                                } else if (distance === 1 && index === activeCardIndex - 1) {
-                                                    const fadeProgress = 1 - Math.max(0, Math.min(1, (cardLocalProgress + 1) * 2));
-                                                    scale = 1 - (0.06 * fadeProgress);
-                                                    opacity = 1 - (0.3 * fadeProgress);
-                                                } else {
-                                                    scale = 0.94;
-                                                    opacity = index < activeCardIndex ? 0.5 : 0.6;
-                                                }
+                                                // Normalize distance: 0 when centered, 1 when one card away
+                                                const normalizedDistance = distanceFromCenter / progressPerCard;
 
-                                                if (progress >= 0.99 && index === numCards - 1) {
-                                                    scale = 1;
-                                                    opacity = 1;
-                                                }
+                                                // Use easeOutQuad for smoother falloff
+                                                const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
+                                                const centeredness = easeOut(Math.max(0, 1 - normalizedDistance));
 
-                                                gsap.set(card, { scale, opacity });
+                                                // Calculate scale: 1.2 when centered, 0.7 when far (50% difference!)
+                                                const scale = 0.7 + (0.5 * centeredness); // Range: 0.7 to 1.2
+
+                                                // Calculate opacity: 1 when centered, 0.4 when far
+                                                const opacity = 0.4 + (0.6 * centeredness); // Range: 0.4 to 1.0
+
+                                                // Use gsap.to for smooth interpolated transitions
+                                                gsap.to(card, {
+                                                    scale,
+                                                    opacity,
+                                                    duration: 0.3,
+                                                    ease: "power2.out",
+                                                    overwrite: "auto"
+                                                });
                                             });
                                         },
                                         onLeave: () => {
-                                            gsap.set(cards[numCards - 1], { scale: 1, opacity: 1 });
+                                            gsap.set(cards[numCards - 1], { scale: 1.2, opacity: 1 });
                                             gsap.set(scrollContainer, { x: -initialOffset - scrollAmount });
                                         },
                                         onEnterBack: () => {
                                             // Reset to first card centered when scrolling back up
-                                            gsap.set(cards[0], { scale: 1, opacity: 1 });
+                                            gsap.set(cards[0], { scale: 1.2, opacity: 1 });
                                             for (let i = 1; i < numCards; i++) {
-                                                gsap.set(cards[i], { scale: 0.94, opacity: 0.6 });
+                                                gsap.set(cards[i], { scale: 0.7, opacity: 0.4 });
                                             }
                                             gsap.set(scrollContainer, { x: -initialOffset });
                                         },
@@ -323,10 +319,10 @@ export default function ServicesSection() {
                                             // Ensure proper state after refresh
                                             const progress = self.progress || 0;
                                             if (progress === 0) {
-                                                gsap.set(cards[0], { scale: 1, opacity: 1 });
+                                                gsap.set(cards[0], { scale: 1.2, opacity: 1 });
                                                 gsap.set(scrollContainer, { x: -initialOffset });
                                             } else if (progress >= 0.99) {
-                                                gsap.set(cards[numCards - 1], { scale: 1, opacity: 1 });
+                                                gsap.set(cards[numCards - 1], { scale: 1.2, opacity: 1 });
                                                 gsap.set(scrollContainer, { x: -initialOffset - scrollAmount });
                                             }
                                         },
