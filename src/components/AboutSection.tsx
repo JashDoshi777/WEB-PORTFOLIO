@@ -80,12 +80,7 @@ export default function AboutSection() {
                 },
             });
 
-            // Fade marquee header with blur
-            tl.to(marqueeRef.current, {
-                opacity: 0.15,
-                filter: "blur(2px)",
-                duration: 0.12,
-            }, 0);
+            // Marquee header stays visible (no fade or blur)
 
             // Reveal card with 3D effect
             tl.to(cardRef.current, {
