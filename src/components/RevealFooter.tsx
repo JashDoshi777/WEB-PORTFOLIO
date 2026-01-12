@@ -89,11 +89,11 @@ export default function RevealFooter() {
                     zIndex: isFooterActive ? 40 : -10,
                 }}
             >
-                {/* Gradient orbs */}
+                {/* Gradient orbs - neutral greys */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]" />
-                    <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[150px]" />
-                    <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-pink-500/5 rounded-full blur-[120px]" />
+                    <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/[0.03] rounded-full blur-[150px]" />
+                    <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-white/[0.02] rounded-full blur-[150px]" />
+                    <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-white/[0.02] rounded-full blur-[120px]" />
                 </div>
 
                 {/* Main content */}
@@ -113,8 +113,8 @@ export default function RevealFooter() {
                                 href="mailto:hello@jashdoshi.dev"
                                 className="group relative inline-flex items-center gap-3 px-8 py-4 overflow-hidden rounded-full cursor-pointer"
                             >
-                                {/* Button background with gradient border */}
-                                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 opacity-20 group-hover:opacity-30 transition-opacity" />
+                                {/* Button background with subtle border */}
+                                <span className="absolute inset-0 rounded-full bg-white/10 group-hover:bg-white/15 transition-opacity" />
                                 <span className="absolute inset-[1px] rounded-full bg-[#0a0a0b]" />
                                 <span className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-300" />
                                 <span className="relative z-10 text-white text-base font-medium tracking-wide">GET IN TOUCH</span>
@@ -139,7 +139,7 @@ export default function RevealFooter() {
                                     href="mailto:hello@jashdoshi.dev"
                                     className="flex items-center gap-3 text-white/90 hover:text-white transition-colors text-sm font-light mb-2 group/link cursor-pointer"
                                 >
-                                    <span className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/30 flex items-center justify-center shrink-0">
+                                    <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
@@ -165,7 +165,7 @@ export default function RevealFooter() {
                                             href={link.href}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:bg-gradient-to-br hover:from-purple-500/20 hover:to-pink-500/20 hover:border-white/25 transition-all duration-300 cursor-pointer"
+                                            className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/25 transition-all duration-300 cursor-pointer"
                                             onMouseEnter={() => setHoveredSocial(link.name)}
                                             onMouseLeave={() => setHoveredSocial(null)}
                                         >
@@ -202,7 +202,7 @@ export default function RevealFooter() {
                                         style={{
                                             background: isSubscribed
                                                 ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                                                : "linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%)",
+                                                : "rgba(255, 255, 255, 0.1)",
                                             border: "1px solid",
                                             borderColor: isSubscribed ? "rgba(16, 185, 129, 0.5)" : "rgba(255, 255, 255, 0.15)",
                                             color: "white",
@@ -253,26 +253,6 @@ export default function RevealFooter() {
                                         {letter}
                                     </motion.span>
                                 ))}
-                                {/* Registered trademark */}
-                                <motion.span
-                                    className="inline-flex items-start justify-center ml-2"
-                                    initial={{ opacity: 0, scale: 0 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: 1.1 }}
-                                    viewport={{ once: true }}
-                                    style={{
-                                        fontSize: "clamp(0.6rem, 2vw, 2rem)",
-                                        marginBottom: "auto",
-                                        paddingTop: "0.2rem",
-                                    }}
-                                >
-                                    <span
-                                        className="inline-flex items-center justify-center rounded-full border-2 border-white/30 w-[1.3em] h-[1.3em] bg-gradient-to-br from-purple-500/10 to-pink-500/10"
-                                        style={{ color: "rgba(255,255,255,0.4)" }}
-                                    >
-                                        ®
-                                    </span>
-                                </motion.span>
                             </div>
                         </div>
                     </motion.div>
