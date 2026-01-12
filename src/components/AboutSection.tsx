@@ -11,6 +11,7 @@ if (typeof window !== "undefined") {
 export default function AboutSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const marqueeRef = useRef<HTMLDivElement>(null);
+    const headerWrapperRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
     const textLine1Ref = useRef<HTMLDivElement>(null);
     const textLine2Ref = useRef<HTMLDivElement>(null);
@@ -56,6 +57,11 @@ export default function AboutSection() {
             });
 
             // Set initial states - all hidden with enhanced effects
+            // Header starts collapsed to center (scaleX: 0)
+            gsap.set(headerWrapperRef.current, {
+                scaleX: 0,
+                transformOrigin: "center center"
+            });
             gsap.set(cardRef.current, { opacity: 0, y: 80, scale: 0.9, rotateY: -15, filter: "blur(10px)" });
             gsap.set(textLine1Ref.current, { opacity: 0, x: 200, filter: "blur(8px)" });
             gsap.set(textLine2Ref.current, { opacity: 0, x: -200, filter: "blur(8px)" });
@@ -66,6 +72,18 @@ export default function AboutSection() {
             gsap.set(stat2Ref.current, { opacity: 0, y: 50, scale: 0.8 });
             gsap.set(stat3Ref.current, { opacity: 0, y: 50, scale: 0.8 });
             gsap.set(stripsWrapperRef.current, { opacity: 0, y: 80, scale: 0.95 });
+
+            // Header expansion from center - starts early as section enters viewport
+            gsap.to(headerWrapperRef.current, {
+                scaleX: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 90%",
+                    end: "top 30%",
+                    scrub: 0.3,
+                },
+            });
 
             // Main pinned scroll timeline
             const tl = gsap.timeline({
@@ -80,9 +98,7 @@ export default function AboutSection() {
                 },
             });
 
-            // Marquee header stays visible (no fade or blur)
-
-            // Reveal card with 3D effect
+            // Reveal card with 3D effect - starts immediately when pinned
             tl.to(cardRef.current, {
                 opacity: 1,
                 y: 0,
@@ -192,8 +208,8 @@ export default function AboutSection() {
         >
             {/* Pinned wrapper that includes header and content */}
             <div className="min-h-screen pt-20">
-                {/* Large Header Marquee Banner */}
-                <div ref={marqueeRef} className="py-3 md:py-4 overflow-hidden border-b border-white/5">
+                {/* Large Header Marquee Banner - Expands from center on scroll */}
+                <div ref={headerWrapperRef} className="py-3 md:py-4 overflow-hidden border-b border-white/5">
                     <div className="about-header-marquee flex whitespace-nowrap" style={{ width: "200%" }}>
                         <span className="text-2xl md:text-4xl lg:text-6xl font-black tracking-tight text-white/90 uppercase">
                             {marqueeText.repeat(6)}
