@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from "framer-motion";
 
-const TOTAL_FRAMES = 240;
+const TOTAL_FRAMES = 192;
 const IMAGE_PATH = "/scroll_animation_image_frames/ezgif-frame-";
 
 function useImagePreloader(totalFrames: number) {
