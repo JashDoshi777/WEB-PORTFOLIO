@@ -206,6 +206,14 @@ export default function AboutSection() {
             ref={sectionRef}
             className="relative bg-[#050505] overflow-visible"
         >
+            {/* Gradient fade from video section above */}
+            <div
+                className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-10"
+                style={{
+                    background: "linear-gradient(to bottom, #050505 0%, transparent 100%)"
+                }}
+            />
+
             {/* Pinned wrapper that includes header and content */}
             <div className="min-h-screen pt-20">
                 {/* Large Header Marquee Banner - Expands from center on scroll */}

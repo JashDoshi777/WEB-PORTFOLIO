@@ -176,70 +176,101 @@ export default function PortfolioScroll() {
             style={{ background: "linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 100%)" }}
           />
 
-          {/* Intro Text */}
+          {/* Intro Text - Left Side */}
           {isLoaded && (
             <motion.div
-              className="absolute bottom-20 left-0 right-0 text-center pointer-events-none px-6"
+              className="absolute bottom-1/4 left-8 md:left-16 lg:left-24 text-left pointer-events-none max-w-lg"
               style={{ opacity: introOpacity }}
             >
-              <p className="text-white/40 text-xs uppercase tracking-[0.4em] mb-4 font-medium">Full-Stack Developer & Creative Technologist</p>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-extralight text-white tracking-tight mb-3">
-                Jash Doshi
+              <p className="text-cyan-400/90 text-[10px] md:text-xs uppercase tracking-[0.4em] mb-3 font-light">
+                Full-Stack Developer
+              </p>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight text-white tracking-tighter mb-2 leading-[0.9]">
+                Jash
               </h1>
-              <p className="text-white/50 text-base md:text-lg font-light max-w-md mx-auto">
-                Turning bold ideas into seamless digital experiences
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight text-white/80 tracking-tighter leading-[0.9]">
+                Doshi
+              </h1>
+              <div className="w-16 h-[1px] bg-gradient-to-r from-cyan-400 to-transparent mt-6 mb-4" />
+              <p className="text-white/50 text-sm md:text-base font-light leading-relaxed">
+                Turning bold ideas into<br />seamless digital experiences
               </p>
             </motion.div>
           )}
 
-          {/* Craft Text */}
+          {/* Philosophy Text - Right Side */}
           {isLoaded && (
             <motion.div
-              className="absolute bottom-20 left-0 right-0 text-center pointer-events-none px-6"
+              className="absolute bottom-1/4 right-8 md:right-16 lg:right-24 text-right pointer-events-none max-w-md"
               style={{ opacity: craftOpacity }}
             >
-              <p className="text-white/40 text-xs uppercase tracking-[0.3em] mb-4">Philosophy</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight text-white tracking-tight mb-4">
-                Where Code Meets Artistry
+              <p className="text-orange-400/80 text-[10px] md:text-xs uppercase tracking-[0.4em] mb-3 font-light">
+                Philosophy
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tight mb-2 leading-[1.1]">
+                Where Code
               </h2>
-              <p className="text-white/50 text-base md:text-lg font-light max-w-lg mx-auto">
-                I believe great software should feel invisible—intuitive, fast, and beautiful
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight tracking-tight leading-[1.1]">
+                <span className="text-cyan-400/90">Meets</span>{" "}
+                <span className="text-orange-400/90">Artistry</span>
+              </h2>
+              <div className="w-16 h-[1px] bg-gradient-to-l from-orange-400 to-transparent mt-6 mb-4 ml-auto" />
+              <p className="text-white/50 text-sm md:text-base font-light leading-relaxed">
+                Great software should feel invisible—<br />intuitive, fast, and beautiful
               </p>
             </motion.div>
           )}
 
-          {/* Skills Text */}
+          {/* Skills Text - Left Side */}
           {isLoaded && (
             <motion.div
-              className="absolute bottom-20 left-0 right-0 text-center pointer-events-none px-6"
+              className="absolute bottom-1/4 left-8 md:left-16 lg:left-24 text-left pointer-events-none max-w-md"
               style={{ opacity: skillsOpacity }}
             >
-              <p className="text-white/40 text-xs uppercase tracking-[0.3em] mb-4">Expertise</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight text-white tracking-tight mb-4">
-                Motion · Performance · Precision
+              <p className="text-teal-400/80 text-[10px] md:text-xs uppercase tracking-[0.4em] mb-3 font-light">
+                Expertise
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight tracking-tight leading-[1.1]">
+                <span className="text-cyan-400/90">Motion</span>
               </h2>
-              <p className="text-white/50 text-base md:text-lg font-light max-w-lg mx-auto">
-                React, Next.js, TypeScript & modern web technologies
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tight leading-[1.1]">
+                Performance
+              </h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight tracking-tight leading-[1.1]">
+                <span className="text-orange-400/90">Precision</span>
+              </h2>
+              <div className="w-16 h-[1px] bg-gradient-to-r from-teal-400 to-transparent mt-6 mb-4" />
+              <p className="text-white/40 text-sm md:text-base font-light">
+                React · Next.js · TypeScript
               </p>
             </motion.div>
           )}
 
-          {/* CTA Text */}
+          {/* CTA Text - Right Side */}
           {isLoaded && (
             <motion.div
-              className="absolute bottom-20 left-0 right-0 text-center px-6"
+              className="absolute bottom-1/4 right-8 md:right-16 lg:right-24 text-right max-w-md"
               style={{ opacity: ctaOpacity }}
             >
-              <p className="text-white/40 text-xs uppercase tracking-[0.3em] mb-4">Ready to Collaborate?</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight text-white tracking-tight mb-6">
-                Let&apos;s Create Something Extraordinary
+              <p className="text-cyan-400/80 text-[10px] md:text-xs uppercase tracking-[0.4em] mb-3 font-light">
+                Ready to Collaborate?
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tight mb-1 leading-[1.1]">
+                Let&apos;s Create
               </h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight tracking-tight leading-[1.1]">
+                <span className="text-orange-400/90">Something</span>
+              </h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight text-white/80 tracking-tight leading-[1.1]">
+                Extraordinary
+              </h2>
+              <div className="w-16 h-[1px] bg-gradient-to-l from-cyan-400 to-transparent mt-6 mb-5 ml-auto" />
               <a
                 href="#contact"
-                className="inline-flex items-center gap-3 px-6 py-3 border border-white/30 rounded-full text-sm text-white hover:bg-white hover:text-black transition-all duration-300"
+                className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors duration-300 font-light"
               >
                 Get in touch
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyan-400">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
@@ -264,6 +295,14 @@ export default function PortfolioScroll() {
             </motion.div>
           )}
         </div>
+
+        {/* Seamless blend into next section */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-64 pointer-events-none"
+          style={{
+            background: "linear-gradient(to bottom, transparent 0%, #050505 100%)"
+          }}
+        />
       </div>
     </>
   );
