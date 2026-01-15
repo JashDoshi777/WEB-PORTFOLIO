@@ -256,9 +256,9 @@ export default function TimelineSection() {
                 />
                 <defs>
                     <linearGradient id="greyStripGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="rgba(100,100,100,0.25)" />
-                        <stop offset="50%" stopColor="rgba(150,150,150,0.35)" />
-                        <stop offset="100%" stopColor="rgba(100,100,100,0.25)" />
+                        <stop offset="0%" stopColor="#ffffff" />
+                        <stop offset="50%" stopColor="#ffffff" />
+                        <stop offset="100%" stopColor="#ffffff" />
                     </linearGradient>
                 </defs>
             </svg>
